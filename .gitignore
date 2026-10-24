@@ -1,0 +1,41 @@
+
+# Python environments and cache
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# Editor and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary files and uploaded recordings
+temp/
+tmp/
+uploads/
+*.tmp
+
+# Private analysis history and reports
+results/analysis_history.csv
+results/analysis_reports/
+results/simulated_alerts.json
+
+# Raw and processed datasets
+dataset/raw/
+dataset/processed/
+config/trusted_contacts.json
+# Large generated feature and split files
+results/features.csv
+results/train.csv
+results/test.csv
+results/validation.csv
+
+# Hugging Face cache
+dataset/**/.cache/
