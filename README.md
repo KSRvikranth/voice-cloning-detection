@@ -14,7 +14,6 @@ The aim is to help users recognize potentially fraudulent or manipulated voice m
 - Voice authenticity prediction using trained machine-learning models.
 - Support for multiple audio formats, depending on the installed FFmpeg configuration.
 - Detection of suspicious conversation patterns.
-- Risk scoring and warning messages.
 - API endpoints for submitting audio and retrieving analysis results.
 - Test scripts for checking API behavior, detector performance, edge cases, and risk scoring.
 
