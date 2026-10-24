@@ -1,0 +1,1307 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrueVoice</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f6fb;
+            color: #1e293b;
+        }
+
+        header {
+            background: #14213d;
+            color: white;
+            padding: 22px 7%;
+        }
+
+        header h1 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        header p {
+            color: #cbd5e1;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px #0000000a;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-bottom: 18px;
+        }
+
+        .upload-box {
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            padding: 30px 15px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+        }
+
+        button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .muted {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #475569;
+            overflow-wrap: anywhere;
+        }
+
+        .risk-number {
+            font-size: 42px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #e2e8f0;
+            font-weight: bold;
+        }
+
+        .setting {
+            margin: 18px 0;
+            line-height: 1.6;
+        }
+
+        .setting input[type="number"] {
+            width: 85px;
+            padding: 8px;
+            margin-left: 8px;
+        }
+
+        .setting label {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .notice {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px;
+            border-radius: 6px;
+            margin-top: 18px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 750px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .history-section {
+            background: white;
+            padding: 24px;
+            margin-top: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px #0000000a;
+        }
+
+        .history-section h2 {
+            margin-bottom: 15px;
+            color: #14213d;
+        }
+
+        .history-section button {
+            margin-bottom: 15px;
+        }
+
+        .history-table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .history-section table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        .history-section th,
+        .history-section td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .history-section th {
+            background: #14213d;
+            color: white;
+        }
+
+        .history-section tbody tr:hover {
+            background: #f1f5f9;
+        }
+        
+.history-filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.history-filters input,
+.history-filters select {
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.history-filters input {
+    flex: 1;
+    min-width: 220px;
+}
+
+.history-filters select {
+    background: white;
+}
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>TrueVoice</h1>
+    <p>Voice Cloning Detection and Scam Risk Analysis</p>
+</header>
+
+<main>
+    <section class="welcome">
+        <h2>Welcome to your protection dashboard</h2>
+        <p class="muted">
+            Analyze audio for potential synthetic voice signals
+            and suspicious conversation patterns.
+        </p>
+    </section>
+
+    <div class="grid">
+
+        <section>
+            <div class="card">
+                <h3>Audio Analysis</h3>
+
+                <div class="upload-box">
+                    <p><strong>Select an audio recording</strong></p>
+                    <p class="muted">
+                        Supported formats: WAV, MP3, MPEG, OGG, FLAC, M4A, AAC, and WEBM.
+                    </p>
+
+                    <input
+                        type="file"
+                        id="audioFile"
+                        accept=".wav,.mp3,.mpeg,.ogg,.flac,.m4a,.aac,.webm,audio/*"
+                    >
+
+                    <button id="analyzeButton" type="button">
+                        Analyze Audio
+                    </button>
+
+                    <p class="status" id="uploadStatus">
+                        Waiting for audio selection.
+                    </p>
+                </div>
+
+                <div class="notice">
+                    <strong>Note:</strong> This dashboard is not
+                    continuously monitoring your phone calls.
+                    Live microphone tracking is planned for a later day.
+                </div>
+            </div>
+            
+<div class="card" id="liveAnalysisCard">
+    <h3>Live Microphone Analysis</h3>
+
+    <p class="muted">
+        Analyze short microphone recordings continuously.
+        Microphone access requires your permission.
+    </p>
+
+    <button id="startLiveButton" type="button">
+        Start Live Analysis
+    </button>
+
+    <button id="stopLiveButton" type="button" disabled>
+        Stop Live Analysis
+    </button>
+
+    <p id="liveStatus" class="status" aria-live="polite">
+        Live analysis is stopped.
+    </p>
+
+    <p>
+        Latest prediction:
+        <strong id="livePrediction">Waiting</strong>
+    </p>
+
+    <p>
+        Latest model confidence:
+        <strong id="liveConfidence">Not available</strong>
+    </p>
+
+    <p>
+        Latest risk level:
+        <strong id="liveRisk">Not available</strong>
+    </p>
+
+    <p class="muted">
+        Each result is an estimate for a short audio segment,
+        not a final judgement about the entire conversation.
+    </p>
+</div>
+
+            <div class="card">
+                <h3>Analysis Results</h3>
+
+                <p class="muted">
+                    Your analysis results will appear here after you upload and analyze an audio recording.
+                </p>
+
+                <p style="margin-top: 18px;">
+                    Voice prediction:
+                    <strong id="voiceResult">Not analyzed</strong>
+                </p>
+
+                <p style="margin-top: 12px;">
+                    Transcript:
+                    <span id="transcript">Not available</span>
+                </p>
+
+                <p style="margin-top: 12px;">
+                    Detected signals:
+                    <span id="signals">Not available</span>
+                </p>
+                <p style="margin-top: 12px;">
+                    Real probability:
+                    <span id="realProbability">Not available</span>
+                </p>
+
+                <p style="margin-top: 12px;">
+                    Fake probability:
+                    <span id="fakeProbability">Not available</span>
+                </p>
+                <p style="margin-top: 12px;">
+    Model confidence:
+    <span id="confidence">Not available</span>
+</p>
+
+<p style="margin-top: 12px;">
+    Confidence status:
+    <span id="confidenceStatus">Not available</span>
+</p>
+                <p style="margin-top: 12px;">
+    Confidence warning:
+    <span id="confidenceWarning">Not available</span>
+</p>
+                <h4 style="margin-top: 18px;">Explanation</h4>
+                                <pre id="explanation"
+                    style="white-space: pre-wrap; margin-top: 8px;">
+                Not available
+                </pre>
+
+                <button id="downloadReportButton"
+                        type="button"
+                        disabled
+                        style="margin-top: 15px;">
+                    Download Analysis Report
+                </button>
+            </div>
+        </section>
+
+        <aside>
+            <div class="card">
+                <h3>Risk Overview</h3>
+
+                <p class="muted">Current risk score</p>
+
+                <div class="risk-number" id="riskScore">--</div>
+
+                <span class="risk-level" id="riskLevel">
+                    Not analyzed
+                </span>
+
+                <p class="muted" style="margin-top: 18px;">
+                    Risk estimates are warnings, not proof that
+                    a caller is fraudulent.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Trusted Contact Alerts</h3>
+
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="alertsEnabled">
+                        Enable simulated trusted-contact alerts
+                    </label>
+                </div>
+
+                <div class="setting">
+                    <label for="riskThreshold">
+                        Minimum risk score for alerts:
+                    </label>
+
+                    <input
+                        type="number"
+                        id="riskThreshold"
+                        min="0"
+                        max="100"
+                        value="60"
+                    >
+                </div>
+
+                <button id="saveSettings" type="button">
+                    Save Settings
+                </button>
+
+                <p class="status" id="settingsStatus">
+                    Settings have not been saved.
+                </p>
+
+                <div class="notice">
+                    <strong>Note:</strong>
+                        Your alert settings are sent to the backend when you
+                        analyze audio. Alerts are simulated only and will not
+                        send real SMS or WhatsApp messages.
+                </div>
+            </div>
+        </aside>
+
+    </div>
+    <section class="history-section">
+        <h2>Recent Analysis History</h2>
+    <div class="history-filters">
+        <input
+            type="text"
+            id="historySearch"
+            placeholder="Search by audio filename..."
+        >
+
+        <select id="historyRiskFilter">
+            <option value="ALL">All risk levels</option>
+            <option value="HIGH">HIGH</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="LOW">LOW</option>
+        </select>
+    </div>
+        
+<button id="refreshHistory" type="button">
+    Refresh History
+</button>
+
+<button id="downloadHistoryCsv" type="button">
+    Download History CSV
+</button>
+
+<p id="historyMessage">Loading history...</p>
+
+    <p id="historyMessage">Loading history...</p>
+
+    <div class="history-table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Audio File</th>
+                    <th>Prediction</th>
+                    <th>Confidence</th>
+                    <th>Risk Score</th>
+                    <th>Risk Level</th>
+                    <th>Signals</th>
+                    <th>Report</th>
+                </tr>
+            </thead>
+            <tbody id="historyTableBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+
+let allHistory = [];
+
+async function loadAnalysisHistory() {
+    const message = document.getElementById("historyMessage");
+    const tableBody = document.getElementById("historyTableBody");
+
+    message.textContent = "Loading history...";
+    tableBody.replaceChildren();
+
+    try {
+        // Load every analysis saved in the CSV history.
+        const historyResponse = await fetch("/history");
+
+        if (!historyResponse.ok) {
+            throw new Error("Could not load analysis history.");
+        }
+
+        const historyData = await historyResponse.json();
+        const historyRecords = historyData.history || [];
+
+        // Load full reports separately, where available.
+        let reportRecords = [];
+
+        try {
+            const reportsResponse = await fetch("/history-reports");
+
+            if (reportsResponse.ok) {
+                const reportsData = await reportsResponse.json();
+                reportRecords = reportsData.history || [];
+            }
+        } catch (error) {
+            // The history table can still display CSV records.
+            console.warn("Full report list could not be loaded.", error);
+        }
+
+        // Match available reports to history records.
+        const unusedReports = [...reportRecords];
+
+        allHistory = historyRecords.map(record => {
+            const matchingIndex = unusedReports.findIndex(report =>
+                report.audio_file === record.audio_file &&
+                report.voice_prediction === record.voice_prediction &&
+                String(report.risk_score) === String(record.risk_score) &&
+                String(report.risk_level).toUpperCase() ===
+                    String(record.risk_level).toUpperCase() &&
+                String(report.confidence) === String(record.confidence)
+            );
+
+            let reportId = "";
+
+            if (matchingIndex !== -1) {
+                reportId = unusedReports[matchingIndex].report_id;
+                unusedReports.splice(matchingIndex, 1);
+            }
+
+            return {
+                ...record,
+                report_id: reportId
+            };
+        });
+
+        if (allHistory.length === 0) {
+            message.textContent = "No analysis history found yet.";
+            return;
+        }
+
+        filterAnalysisHistory();
+
+    } catch (error) {
+        console.error("History loading error:", error);
+        message.textContent =
+            "Unable to load history. Please try again.";
+    }
+}
+
+
+document.getElementById("refreshHistory")
+    .addEventListener("click", loadAnalysisHistory);
+
+// Download the complete analysis history as CSV.
+document.getElementById("downloadHistoryCsv")
+    .addEventListener("click", async function () {
+        try {
+            const response = await fetch("/history/export");
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(
+                    errorData.detail || "Could not export history."
+                );
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = "TrueVoice_Analysis_History.csv";
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (error) {
+            alert(error.message || "History export failed.");
+        }
+    });
+
+document.getElementById("historySearch")
+    .addEventListener("input", filterAnalysisHistory);
+
+
+// Add these two listeners below the refresh listener
+document.getElementById("historySearch")
+    .addEventListener("input", filterAnalysisHistory);
+
+document.getElementById("historyRiskFilter")
+    .addEventListener("change", filterAnalysisHistory);
+
+loadAnalysisHistory();
+
+function filterAnalysisHistory() {
+    const searchText = document
+        .getElementById("historySearch")
+        .value.toLowerCase();
+
+    const selectedRisk = document
+        .getElementById("historyRiskFilter")
+        .value;
+
+    const tableBody = document.getElementById("historyTableBody");
+    tableBody.replaceChildren();
+
+    const filteredHistory = allHistory.filter(item => {
+        const filename = (item.audio_file || "").toLowerCase();
+
+        const matchesSearch = filename.includes(searchText);
+
+        const matchesRisk =
+            selectedRisk === "ALL" ||
+            (item.risk_level || "").toUpperCase() === selectedRisk;
+
+        return matchesSearch && matchesRisk;
+    });
+
+    filteredHistory.forEach(item => {
+    const row = document.createElement("tr");
+
+    [
+        item.timestamp,
+        item.audio_file,
+        item.voice_prediction,
+        item.confidence === "" || item.confidence == null
+            ? ""
+            : (Number(item.confidence) * 100).toFixed(2) + "%",
+        item.risk_score,
+        item.risk_level,
+        item.detected_signals
+    ].forEach(value => {
+        const cell = document.createElement("td");
+        cell.textContent = value ?? "";
+        row.appendChild(cell);
+    });
+
+    const reportCell = document.createElement("td");
+    const downloadButton = document.createElement("button");
+
+    downloadButton.type = "button";
+    downloadButton.textContent = "Download";
+    downloadButton.disabled = !item.report_id;
+
+    downloadButton.addEventListener("click", function () {
+        downloadHistoricalReport(item.report_id);
+    });
+
+    reportCell.appendChild(downloadButton);
+    row.appendChild(reportCell);
+    tableBody.appendChild(row);
+});
+    document.getElementById("historyMessage").textContent =
+        `Showing ${filteredHistory.length} of ${allHistory.length} records.`;
+}
+async function downloadHistoricalReport(reportId) {
+    try {
+        const response = await fetch(
+            `/history-reports/${encodeURIComponent(reportId)}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Could not retrieve this report.");
+        }
+
+        const savedReport = await response.json();
+        const data = savedReport.analysis || {};
+
+        const voice = data.voice_analysis || {};
+        const risk = data.risk_analysis || {};
+        const explanation = data.explanation || {};
+        const textAnalysis = data.text_analysis || {};
+
+        const report = `
+TRUEVOICE - HISTORICAL ANALYSIS REPORT
+======================================
+
+Audio File: ${data.audio_file || "Unknown"}
+Saved At: ${savedReport.saved_at || "Unknown"}
+
+VOICE ANALYSIS
+--------------
+Prediction: ${voice.prediction ?? "Not available"}
+Real Probability: ${
+            voice.real_probability != null
+                ? (voice.real_probability * 100).toFixed(2) + "%"
+                : "Not available"
+        }
+Fake Probability: ${
+            voice.fake_probability != null
+                ? (voice.fake_probability * 100).toFixed(2) + "%"
+                : "Not available"
+        }
+Model Confidence: ${
+            voice.confidence != null
+                ? (voice.confidence * 100).toFixed(2) + "%"
+                : "Not available"
+        }
+Confidence Status: ${voice.confidence_status ?? "Not available"}
+
+TRANSCRIPTION
+-------------
+${data.transcription || "No transcript available."}
+
+DETECTED TEXT SIGNALS
+---------------------
+${JSON.stringify(textAnalysis, null, 2)}
+
+RISK ASSESSMENT
+---------------
+Risk Score: ${risk.risk_score ?? "Not available"}/100
+Risk Level: ${risk.risk_level ?? "Not available"}
+
+EXPLANATION
+-----------
+${explanation.summary || "No summary available."}
+
+Detected Signals:
+${JSON.stringify(explanation.detected_signals || [], null, 2)}
+
+Scoring Reasons:
+${JSON.stringify(explanation.scoring_reasons || [], null, 2)}
+
+Suggested Action:
+${explanation.suggested_action || risk.action || "No action available."}
+
+DISCLAIMER
+----------
+These results are automated predictions and heuristic warning signals.
+They do not prove that a voice is genuine or cloned, or that a call is
+safe or fraudulent. Verify important information independently.
+`;
+
+        const blob = new Blob([report], {
+            type: "text/plain;charset=utf-8"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const safeFilename = (data.audio_file || "audio")
+            .replace(/\.[^/.]+$/, "")
+            .replace(/[^a-z0-9_-]/gi, "_");
+
+        link.href = url;
+        link.download = `TrueVoice_History_${safeFilename}.txt`;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    } catch (error) {
+        alert(error.message || "Unable to download the report.");
+    }
+}
+</script>
+</main>
+
+
+<script>
+    const audioFile = document.getElementById("audioFile");
+    const analyzeButton = document.getElementById("analyzeButton");
+    const uploadStatus = document.getElementById("uploadStatus");
+
+    const alertsEnabled = document.getElementById("alertsEnabled");
+    const riskThreshold = document.getElementById("riskThreshold");
+    const saveSettings = document.getElementById("saveSettings");
+    const settingsStatus = document.getElementById("settingsStatus");
+        // Store the latest successful analysis for report download
+    let latestAnalysisData = null;
+
+    const downloadReportButton =
+        document.getElementById("downloadReportButton");
+
+    downloadReportButton.addEventListener("click", function () {
+        if (!latestAnalysisData) {
+            alert("Please analyze an audio file first.");
+            return;
+        }
+
+        const data = latestAnalysisData;
+        const voice = data.voice_analysis || {};
+        const risk = data.risk_analysis || {};
+        const explanation = data.explanation || {};
+        const textAnalysis = data.text_analysis || {};
+
+        const report = `
+TRUEVOICE - VOICE ANALYSIS REPORT
+=================================
+
+Audio File: ${data.audio_file || "Unknown"}
+Generated At: ${new Date().toLocaleString()}
+
+1. VOICE ANALYSIS
+-----------------
+Prediction: ${voice.prediction ?? "Not available"}
+Real Probability: ${
+            voice.real_probability !== undefined
+                ? (voice.real_probability * 100).toFixed(2) + "%"
+                : "Not available"
+        }
+Fake Probability: ${
+            voice.fake_probability !== undefined
+                ? (voice.fake_probability * 100).toFixed(2) + "%"
+                : "Not available"
+        }
+Model Confidence: ${
+            voice.confidence !== undefined
+                ? (voice.confidence * 100).toFixed(2) + "%"
+                : "Not available"
+        }
+Confidence Status: ${voice.confidence_status ?? "Not available"}
+
+2. TRANSCRIPTION
+----------------
+${data.transcription || "No transcript available."}
+
+3. DETECTED TEXT SIGNALS
+------------------------
+${JSON.stringify(textAnalysis, null, 2)}
+
+4. RISK ASSESSMENT
+------------------
+Risk Score: ${risk.risk_score ?? "Not available"}/100
+Risk Level: ${risk.risk_level ?? "Not available"}
+
+5. EXPLANATION
+--------------
+${explanation.summary || "No summary available."}
+
+Detected Signals:
+${JSON.stringify(explanation.detected_signals || [], null, 2)}
+
+Scoring Reasons:
+${JSON.stringify(explanation.scoring_reasons || [], null, 2)}
+
+Suggested Action:
+${explanation.suggested_action || risk.action || "No action available."}
+
+DISCLAIMER
+----------
+These results are automated predictions and heuristic warning signals.
+They do not prove that a voice is genuine or cloned, or that a call is
+safe or fraudulent. Verify important information independently.
+`;
+
+        const blob = new Blob([report], {
+            type: "text/plain;charset=utf-8"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const safeFilename = (data.audio_file || "audio")
+            .replace(/\.[^/.]+$/, "")
+            .replace(/[^a-z0-9_-]/gi, "_");
+
+        link.href = url;
+        link.download = `TrueVoice_Report_${safeFilename}.txt`;
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
+    });
+    audioFile.addEventListener("change", function () {
+    if (audioFile.files.length === 0) {
+        uploadStatus.textContent =
+            "Waiting for audio selection.";
+        return;
+    }
+
+    const file = audioFile.files[0];
+
+    const allowedExtensions = [
+        ".wav",
+        ".mp3",
+        ".mpeg",
+        ".ogg",
+        ".flac",
+        ".m4a",
+        ".aac",
+        ".webm"
+    ];
+
+    const extension = file.name
+        .substring(file.name.lastIndexOf("."))
+        .toLowerCase();
+
+    if (!allowedExtensions.includes(extension)) {
+        uploadStatus.textContent =
+            "Unsupported audio format. Select WAV, MP3, MPEG, OGG, FLAC, M4A, AAC, or WEBM.";
+        audioFile.value = "";
+        return;
+    }
+
+    uploadStatus.textContent =
+        "Selected: " + file.name;
+});
+    
+analyzeButton.addEventListener("click", async function () {
+    if (audioFile.files.length === 0) {
+    uploadStatus.textContent =
+        "Please select an audio file first.";
+    return;
+}
+
+const file = audioFile.files[0];
+
+const allowedExtensions = [
+    ".wav",
+    ".mp3",
+    ".mpeg",
+    ".ogg",
+    ".flac",
+    ".m4a",
+    ".aac",
+    ".webm"
+];
+
+const extension = file.name
+    .substring(file.name.lastIndexOf("."))
+    .toLowerCase();
+
+if (!allowedExtensions.includes(extension)) {
+    uploadStatus.textContent =
+        "Unsupported audio format.";
+    return;
+}
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+    "alerts_enabled",
+    alertsEnabled.checked ? "true" : "false"
+);
+
+formData.append(
+    "minimum_risk_score",
+    riskThreshold.value || "60"
+);
+    analyzeButton.disabled = true;
+    uploadStatus.textContent =
+        "Analyzing audio. Please wait...";
+
+    try {
+        const response = await fetch("/analyze", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log("DEBUG FULL RESPONSE:", JSON.stringify(data, null, 2));
+        if (!response.ok) {
+            throw new Error(
+                data.detail || "Analysis failed."
+            );
+        }
+        latestAnalysisData = data;
+        downloadReportButton.disabled = false;
+        const voice = data.voice_analysis || {};
+        const risk = data.risk_analysis || {};
+        const alert = data.alert_status || {};
+        document.getElementById("explanation").textContent =
+    JSON.stringify(data.explanation ?? {}, null, 2);
+        document.getElementById("voiceResult").textContent =
+            voice.prediction ?? "Not available";
+
+        document.getElementById("realProbability").textContent =
+            voice.real_probability ?? "Not available";
+
+        document.getElementById("fakeProbability").textContent =
+            voice.fake_probability ?? "Not available";
+        document.getElementById("confidence").textContent =
+    voice.confidence !== undefined
+        ? (voice.confidence * 100).toFixed(2) + "%"
+        : "Not available";
+
+document.getElementById("confidenceStatus").textContent =
+    voice.confidence_status ?? "Not available";
+    const confidence = Number(voice.confidence);
+const warningElement = document.getElementById("confidenceWarning");
+
+if (voice.confidence === undefined || !Number.isFinite(confidence)) {
+    warningElement.textContent =
+        "Confidence information is unavailable.";
+} else if (confidence < 0.65) {
+    warningElement.textContent =
+        "UNCERTAIN: The model is unsure. Manual review is recommended.";
+} else if (confidence < 0.80) {
+    warningElement.textContent =
+        "MODERATE: Treat this prediction cautiously and verify independently.";
+} else {
+    warningElement.textContent =
+        "HIGH MODEL CONFIDENCE: This is still a prediction, not proof.";
+}
+        document.getElementById("transcript").textContent =
+            data.transcription ?? "Not available";
+
+        document.getElementById("signals").textContent =
+            JSON.stringify(data.text_analysis ?? {}, null, 2);
+
+        document.getElementById("riskScore").textContent =
+            risk.risk_score ?? "--";
+
+        document.getElementById("riskLevel").textContent =
+            risk.risk_level ?? "Not analyzed";
+
+        document.getElementById("explanation").textContent =
+            JSON.stringify(data.explanation ?? {}, null, 2);
+    
+        latestAnalysisData = data; // Store the latest analysis data
+
+        uploadStatus.textContent =
+            "Analysis completed.";
+
+    } catch (error) {
+        uploadStatus.textContent =
+            "Error: " + error.message;
+
+    } finally {
+        analyzeButton.disabled = false;
+    }
+});
+    saveSettings.addEventListener("click", function () {
+        const threshold = Number(riskThreshold.value);
+
+        if (
+            riskThreshold.value === "" ||
+            !Number.isInteger(threshold) ||
+            threshold < 0 ||
+            threshold > 100
+        ) {
+            settingsStatus.textContent =
+                "Enter a whole number from 0 to 100.";
+            return;
+        }
+
+        settingsStatus.textContent =
+            "Settings selected: alerts " +
+            (alertsEnabled.checked ? "enabled" : "disabled") +
+            ", minimum risk score " + threshold +
+            ". Browser-only for now.";
+    });
+
+const startLiveButton = document.getElementById("startLiveButton");
+const stopLiveButton = document.getElementById("stopLiveButton");
+const liveStatus = document.getElementById("liveStatus");
+const livePrediction = document.getElementById("livePrediction");
+const liveConfidence = document.getElementById("liveConfidence");
+const liveRisk = document.getElementById("liveRisk");
+
+let liveStream = null;
+let liveRecorder = null;
+let liveRunning = false;
+
+// Choose a recording format supported by this browser.
+function getLiveMimeType() {
+    const formats = [
+        "audio/webm;codecs=opus",
+        "audio/webm"
+    ];
+
+    for (const format of formats) {
+        if (MediaRecorder.isTypeSupported(format)) {
+            return format;
+        }
+    }
+
+    return "";
+}
+
+async function analyzeLiveChunk(blob, chunkNumber) {
+    const formData = new FormData();
+
+    const mimeType = blob.type || "audio/webm";
+    const extension = mimeType.includes("webm") ? "webm" : "audio";
+
+    formData.append(
+        "file",
+        blob,
+        `live_chunk_${chunkNumber}.${extension}`
+    );
+
+    liveStatus.textContent =
+        `Analyzing live segment ${chunkNumber}...`;
+
+    const response = await fetch("/analyze", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+    console.group(`Live Audio Chunk ${chunkNumber}`);
+
+console.log("Recorded MIME type:", blob.type);
+console.log("Recorded size:", blob.size, "bytes");
+console.log("API HTTP status:", response.status);
+console.log("Full API response:", data);
+
+console.log(
+    "Voice prediction:",
+    data.voice_analysis?.prediction
+);
+
+console.log(
+    "Real probability:",
+    data.voice_analysis?.real_probability
+);
+
+console.log(
+    "Fake probability:",
+    data.voice_analysis?.fake_probability
+);
+
+console.log(
+    "Confidence:",
+    data.voice_analysis?.confidence
+);
+
+console.groupEnd();
+    if (!response.ok) {
+        throw new Error(data.detail || "Live analysis failed.");
+    }
+
+    const voice = data.voice_analysis || {};
+    const risk = data.risk_analysis || {};
+
+    livePrediction.textContent =
+        voice.prediction ?? "Not available";
+
+    liveConfidence.textContent =
+        voice.confidence !== undefined
+            ? `${(voice.confidence * 100).toFixed(2)}%`
+            : "Not available";
+
+    liveRisk.textContent =
+        risk.risk_level ?? "Not available";
+
+    // Refresh the existing analysis history if that function exists.
+    if (typeof loadAnalysisHistory === "function") {
+        await loadAnalysisHistory();
+    }
+
+    liveStatus.textContent =
+        `Segment ${chunkNumber} analyzed. Results are estimates.`;
+}
+
+function recordLiveChunk(chunkNumber) {
+    return new Promise((resolve, reject) => {
+        const mimeType = getLiveMimeType();
+
+        if (!mimeType) {
+            reject(new Error(
+                "This browser does not support the required WebM recording format."
+            ));
+            return;
+        }
+
+        const chunks = [];
+
+        try {
+            liveRecorder = new MediaRecorder(liveStream, {
+                mimeType: mimeType
+            });
+        } catch (error) {
+            reject(error);
+            return;
+        }
+
+        liveRecorder.ondataavailable = event => {
+            if (event.data && event.data.size > 0) {
+                chunks.push(event.data);
+            }
+        };
+
+        liveRecorder.onerror = () => {
+            reject(new Error("Microphone recording failed."));
+        };
+
+        liveRecorder.onstop = async () => {
+            try {
+                if (!liveRunning) {
+                    resolve();
+                    return;
+                }
+
+                const blob = new Blob(chunks, {
+                    type: mimeType
+                });
+
+                if (blob.size === 0) {
+                    throw new Error("No microphone audio was captured.");
+                }
+
+                await analyzeLiveChunk(blob, chunkNumber);
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        };
+
+        liveRecorder.start();
+
+        // Record one segment of approximately five seconds.
+        setTimeout(() => {
+            if (liveRecorder && liveRecorder.state === "recording") {
+                liveRecorder.stop();
+            }
+        }, 5000);
+    });
+}
+
+startLiveButton.addEventListener("click", async () => {
+    if (liveRunning) {
+        return;
+    }
+
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+        liveStatus.textContent =
+            "Microphone access is unavailable. Open the site through localhost or HTTPS.";
+        return;
+    }
+
+    try {
+        liveStatus.textContent = "Requesting microphone permission...";
+
+        liveStream = await navigator.mediaDevices.getUserMedia({
+            audio: true
+        });
+
+        liveRunning = true;
+        startLiveButton.disabled = true;
+        stopLiveButton.disabled = false;
+
+        let chunkNumber = 1;
+
+        while (liveRunning) {
+            await recordLiveChunk(chunkNumber);
+            chunkNumber += 1;
+        }
+    } catch (error) {
+        liveStatus.textContent =
+            `Live analysis stopped: ${error.message}`;
+    } finally {
+        liveRunning = false;
+
+        if (liveRecorder && liveRecorder.state === "recording") {
+            liveRecorder.stop();
+        }
+
+        if (liveStream) {
+            liveStream.getTracks().forEach(track => track.stop());
+            liveStream = null;
+        }
+
+        startLiveButton.disabled = false;
+        stopLiveButton.disabled = true;
+
+        if (liveStatus.textContent === "Requesting microphone permission...") {
+            liveStatus.textContent = "Live analysis stopped.";
+        }
+    }
+});
+
+stopLiveButton.addEventListener("click", () => {
+    liveRunning = false;
+    stopLiveButton.disabled = true;
+    liveStatus.textContent = "Stopping live analysis...";
+});
+
+</script>
+
+</body>
+</html>
